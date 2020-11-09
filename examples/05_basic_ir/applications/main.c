@@ -30,6 +30,7 @@ rt_int16_t key_scan(void)
     return -RT_ERROR;
 }
 
+struct infrared_decoder_data infrared_data_rx;
 int main(void)
 {
     unsigned int count = 1;
@@ -57,6 +58,8 @@ int main(void)
         {
             /* 有按键按下，蓝灯亮起 */
             rt_pin_write(PIN_LED_B, PIN_LOW);
+            infrared_data.data.nec.addr = 0;
+            infrared_data.data.nec.key = 0xA2;
             infrared_data.data.nec.repeat = 0;
             /* 发送红外数据 */
             infrared_write("nec",&infrared_data);
@@ -64,12 +67,12 @@ int main(void)
             LOG_I("SEND    OK: addr:0x%02X key:0x%02X repeat:%d",
                 infrared_data.data.nec.addr, infrared_data.data.nec.key, infrared_data.data.nec.repeat);
         }
-        else if(infrared_read("nec",&infrared_data) == RT_EOK)  
+        else if(infrared_read("nec",&infrared_data_rx) == RT_EOK)  
         {
             /* 读取到红外数据，红灯亮起 */
             rt_pin_write(PIN_LED_R, PIN_LOW);
             LOG_I("RECEIVE OK: addr:0x%02X key:0x%02X repeat:%d",
-                infrared_data.data.nec.addr, infrared_data.data.nec.key, infrared_data.data.nec.repeat);
+                infrared_data_rx.data.nec.addr, infrared_data_rx.data.nec.key, infrared_data_rx.data.nec.repeat);
         }
         rt_thread_mdelay(10);
 

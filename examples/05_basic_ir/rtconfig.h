@@ -152,7 +152,7 @@
 /* Select infrared decoder */
 
 #define INFRARED_NEC_DECODER
-#define NEC_DEVIATION 100
+#define NEC_DEVIATION 200
 #define PKG_USING_DRV_INFRARED
 #define INFRARED_SEND
 #define INFRARED_SEND_PWM "pwm3"
