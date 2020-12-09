@@ -94,6 +94,9 @@
 /* Socket abstraction layer */
 
 
+/* Network interface device */
+
+
 /* light weight TCP/IP stack */
 
 
@@ -136,8 +139,17 @@
 
 /* tools packages */
 
+#define PKG_USING_CMBACKTRACE
+#define PKG_CMBACKTRACE_PLATFORM_M4
+#define PKG_CMBACKTRACE_DUMP_STACK
+#define PKG_CMBACKTRACE_PRINT_ENGLISH
+#define PKG_USING_CMBACKTRACE_LATEST_VERSION
+#define PKG_CMBACKTRACE_VER_NUM 0x99999
 
 /* system packages */
+
+
+/* Micrium: Micrium software products porting for RT-Thread */
 
 
 /* peripheral libraries and drivers */
@@ -149,10 +161,7 @@
 /* samples: kernel and components samples */
 
 
-/* Privated Packages of RealThread */
-
-
-/* Network Utilities */
+/* games: games run on RT-Thread console */
 
 
 /* Hardware Drivers Config */
