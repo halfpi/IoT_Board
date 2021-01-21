@@ -597,6 +597,7 @@ void USART1_IRQHandler(void)
     rt_interrupt_leave();
 }
 
+// DMA已经接收完UART数据
 void USART1_RX_DMA_IRQHandler(void)
 {
     /* enter interrupt */
@@ -792,15 +793,17 @@ static void stm32_dma_config(struct rt_serial_device *serial)
 
     __HAL_LINKDMA(uart_handle, hdmarx, uart->hdma_rx);
 
+    // 接收到的数据rx_fifo由rt-thread serial分配和管理
     rx_fifo = (struct rt_serial_rx_fifo *)serial->serial_rx;
-    if (HAL_UART_Receive_DMA(&uart->UartHandle, rx_fifo->buffer, serial->config.bufsz) != HAL_OK)
+    // serial->config.bufsz决定DMA大小
+    if (HAL_UART_Receive_DMA(&uart->UartHandle, rx_fifo->buffer, serial->config.bufsz) != HAL_OK) 
     {
         /* Transfer error in reception process */
         RT_ASSERT(0);
     }
 
     /* enable interrupt */
-    __HAL_UART_ENABLE_IT(&uart->UartHandle, UART_IT_IDLE);
+    __HAL_UART_ENABLE_IT(&uart->UartHandle, UART_IT_IDLE); // 使能UART空闲中断，不定长数据接收完成后，马上触发中断处理
     /* enable rx irq */
     NVIC_EnableIRQ(uart->irq);
 }
