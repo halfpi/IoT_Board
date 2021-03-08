@@ -54,7 +54,7 @@
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
           <DebugInformation>1</DebugInformation>
-          <BrowseInformation>0</BrowseInformation>
+          <BrowseInformation>1</BrowseInformation>
           <ListingPath>.\build\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
@@ -945,6 +945,11 @@
               <FileName>drv_qspi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\drivers\drv_qspi.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_spi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\drv_spi.c</FilePath>
             </File>
           </Files>
         </Group>

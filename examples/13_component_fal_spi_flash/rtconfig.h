@@ -83,6 +83,7 @@
 #define RT_USING_SFUD
 #define RT_SFUD_USING_SFDP
 #define RT_SFUD_USING_FLASH_INFO_TABLE
+#define RT_DEBUG_SFUD
 
 /* Using WiFi */
 
@@ -180,6 +181,7 @@
 #define BSP_UART_USING_DMA_RX
 #define BSP_USING_QSPI
 #define BSP_USING_GPIO
+#define BSP_USING_SPI2
 
 /* External Libraries */
 

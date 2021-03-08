@@ -15,13 +15,78 @@
 #define DBG_TAG "main"
 #define DBG_LVL DBG_LOG
 #include <rtdbg.h>
+#include "drv_spi.h"
 
 #define BUF_SIZE 1024
 
 static int fal_test(const char *partiton_name);
 
+static uint8_t recv_data[1024 * 4] = {0};
+
+uint8_t cmd_RDID[] = {0x9F}; // read flash RDID
+uint8_t recv_cnt_RDID = 3;
+
+uint8_t cmd_SFDP[] = {0x5A, 0x00, 0x00, 0x00, 0x00}; // SFDP
+uint8_t recv_cnt_SFDP = 36;
+
+static struct rt_spi_device *spi_dev_gd25q64;
+int spi_flash_test(void)
+{
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    rt_hw_spi_device_attach("spi2", "spi20", GPIOB, GPIO_PIN_12);
+
+    /* find qspi device */
+    spi_dev_gd25q64 = (struct rt_spi_device *)rt_device_find("spi20");
+    if (!spi_dev_gd25q64)
+    {
+        rt_kprintf("spi flash init failed! can't find spi device.");
+        return -RT_ERROR;
+    }
+
+    /* config spi */
+    {
+        struct rt_spi_configuration cfg;
+        cfg.data_width = 8;
+        cfg.mode = RT_SPI_MODE_0 | RT_SPI_MSB; /* SPI Compatible Modes 0 */
+        cfg.max_hz = 1 * 1000 * 1000;          /* SPI Interface with Clock Speeds Up to 20 MHz */
+        rt_spi_configure(spi_dev_gd25q64, &cfg);
+    } /* config spi */
+
+    rt_spi_send_then_recv(spi_dev_gd25q64, cmd_RDID, sizeof(cmd_RDID) / sizeof(cmd_RDID[0]), recv_data, recv_cnt_RDID);
+    rt_kprintf("\r\ncmd_RDID receive data length: %d", recv_cnt_RDID);
+    for (uint32_t i = 0; i < recv_cnt_RDID; i++)
+    {
+        if (i % 4 == 0)
+        {
+            rt_kprintf("\r\nrecv_data ");
+        }
+        rt_kprintf("0x%02x ", recv_data[i]);
+    }
+
+    rt_thread_mdelay(10);
+    rt_kprintf("\r\n");
+
+    rt_spi_send_then_recv(spi_dev_gd25q64, cmd_SFDP, sizeof(cmd_SFDP) / sizeof(cmd_SFDP[0]), recv_data, recv_cnt_SFDP);
+    rt_kprintf("\r\ncmd_SFDP receive data length: %d", recv_cnt_SFDP);
+    for (uint32_t i = 0; i < recv_cnt_SFDP; i++)
+    {
+        if (i % 4 == 0)
+        {
+            rt_kprintf("\r\nrecv_data ");
+        }
+        rt_kprintf("0x%02x ", recv_data[i]);
+    }
+
+    /* wait for enter qspi mode */
+    rt_thread_mdelay(10);
+
+    return RT_EOK;
+}
+
 int main(void)
 {
+    spi_flash_test();
+
     fal_init();
 
     if (fal_test("param") == 0)
@@ -41,7 +106,7 @@ int main(void)
     {
         LOG_E("Fal partition (%s) test failed!", "download");
     }
-		
+
     return 0;
 }
 
@@ -78,11 +143,11 @@ static int fal_test(const char *partiton_name)
     LOG_I("Flash device : %s   "
           "Flash size : %dK   "
           "Partition : %s   "
-          "Partition size: %dK", 
-           partition->flash_name, 
-           flash_dev->len/1024,
-           partition->name,
-           partition->len/1024);
+          "Partition size: %dK",
+          partition->flash_name,
+          flash_dev->len / 1024,
+          partition->name,
+          partition->len / 1024);
 
     /* 擦除 `partition` 分区上的全部数据 */
     ret = fal_partition_erase_all(partition);
@@ -108,7 +173,7 @@ static int fal_test(const char *partiton_name)
             ret = -1;
             return ret;
         }
-        for(j = 0; j < len; j++)
+        for (j = 0; j < len; j++)
         {
             /* 校验数据内容是否为 0xFF */
             if (buf[j] != 0xFF)
@@ -155,7 +220,7 @@ static int fal_test(const char *partiton_name)
             ret = -1;
             return ret;
         }
-        for(j = 0; j < len; j++)
+        for (j = 0; j < len; j++)
         {
             /* 校验读取的数据是否为步骤 3 中写入的数据 0x00 */
             if (buf[j] != 0x00)
