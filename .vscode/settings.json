@@ -1,6 +1,6 @@
 {
     "files.exclude": {
-        "examples/01_basic_led_blink": false,
+        "examples/01_basic_led_blink": true,
         "examples/02_basic_rgb_led": true,
         "examples/03_basic_key": true,
         "examples/04_basic_beep_motor": true,
@@ -13,6 +13,7 @@
         "examples/11_component_fs_tf_card": true,
         "examples/12_component_pm": true,
         "examples/13_component_fal": true,
+        "examples/13_component_fal_spi_flash": false,
         "examples/14_component_kv": true,
         "examples/15_component_fs_flash": true,
         "examples/16_iot_wifi_manager": true,
@@ -31,7 +32,16 @@
         "examples/29_iot_web_server": true,
         "examples/30_iot_board_demo": true,
         "examples/31_micropython": true,
+        "examples/31_micropython_steven": true,
         "examples/32_driver_uart_dma": true,
-        "examples/CmBacktrace_test": true
+        "examples/CmBacktrace_test": true,
+        "examples/14_component_kv/packages/fal-v0.2.0/samples": true
+    },
+    "files.associations": {
+        "board.h": "c",
+        "drv_clock.h": "c",
+        "drv_gpio.h": "c",
+        "stm32l4xx.h": "c",
+        "stm32l475xx.h": "c"
     }
 }
