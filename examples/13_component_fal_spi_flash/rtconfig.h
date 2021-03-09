@@ -182,6 +182,7 @@
 #define BSP_USING_QSPI
 #define BSP_USING_GPIO
 #define BSP_USING_SPI2
+#define BSP_USING_FLASH_SPI_GD25Q64
 
 /* External Libraries */
 

@@ -932,24 +932,19 @@
               <FilePath>..\..\drivers\drv_gpio.c</FilePath>
             </File>
             <File>
-              <FileName>drv_qspi_flash.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\drivers\drv_qspi_flash.c</FilePath>
-            </File>
-            <File>
               <FileName>drv_usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\drivers\drv_usart.c</FilePath>
             </File>
             <File>
-              <FileName>drv_qspi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\drivers\drv_qspi.c</FilePath>
-            </File>
-            <File>
               <FileName>drv_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\drivers\drv_spi.c</FilePath>
+            </File>
+            <File>
+              <FileName>drv_spi_flash.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\drivers\drv_spi_flash.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -19,7 +19,7 @@ sfud_flash sfud_norflash0;
 static int fal_sfud_init(void)
 {
     sfud_flash_t sfud_flash0 = NULL;
-    sfud_flash0 = (sfud_flash_t)rt_sfud_flash_find("qspi10");
+    sfud_flash0 = (sfud_flash_t)rt_sfud_flash_find("spi20");
     if (NULL == sfud_flash0)
     {
         return -1;

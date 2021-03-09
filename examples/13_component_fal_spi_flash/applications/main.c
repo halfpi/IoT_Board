@@ -32,9 +32,6 @@ uint8_t recv_cnt_SFDP = 36;
 static struct rt_spi_device *spi_dev_gd25q64;
 int spi_flash_test(void)
 {
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    rt_hw_spi_device_attach("spi2", "spi20", GPIOB, GPIO_PIN_12);
-
     /* find qspi device */
     spi_dev_gd25q64 = (struct rt_spi_device *)rt_device_find("spi20");
     if (!spi_dev_gd25q64)
@@ -48,7 +45,7 @@ int spi_flash_test(void)
         struct rt_spi_configuration cfg;
         cfg.data_width = 8;
         cfg.mode = RT_SPI_MODE_0 | RT_SPI_MSB; /* SPI Compatible Modes 0 */
-        cfg.max_hz = 1 * 1000 * 1000;          /* SPI Interface with Clock Speeds Up to 20 MHz */
+        cfg.max_hz = 1 * 1000 * 1000;          /* SPI Interface with Clock Speeds Up to 1 MHz */
         rt_spi_configure(spi_dev_gd25q64, &cfg);
     } /* config spi */
 
@@ -66,6 +63,7 @@ int spi_flash_test(void)
     rt_thread_mdelay(10);
     rt_kprintf("\r\n");
 
+    // read_sfdp_header
     rt_spi_send_then_recv(spi_dev_gd25q64, cmd_SFDP, sizeof(cmd_SFDP) / sizeof(cmd_SFDP[0]), recv_data, recv_cnt_SFDP);
     rt_kprintf("\r\ncmd_SFDP receive data length: %d", recv_cnt_SFDP);
     for (uint32_t i = 0; i < recv_cnt_SFDP; i++)
